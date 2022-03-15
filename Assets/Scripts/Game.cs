@@ -132,4 +132,17 @@ public class Game : MonoBehaviour
         SCREEN_WIDTH = gridWidth;
         grid = new Cell[SCREEN_WIDTH, SCREEN_HEIGHT];
     }
+
+    public void CleanGrid() {
+        for (int y = 0; y < SCREEN_HEIGHT; y++) {
+            for (int x = 0; x < SCREEN_WIDTH; x++) {
+                grid[x, y].SetAlive(false);
+            }
+        }
+    }
+
+    public void RunSimulation() {
+        CleanGrid();
+        PlaceCells();
+    }
 }
