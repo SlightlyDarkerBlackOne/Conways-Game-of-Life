@@ -37,7 +37,7 @@ public class InputManager : MonoBehaviour
             int x = Mathf.RoundToInt(mousePoint.x);
             int y = Mathf.RoundToInt(mousePoint.y);
             
-            game.SetPatternAliveOnCoordinates(x, y, pattern.patternArray, pattern.y, pattern.x);
+            game.SetPatternAliveOnCoordinates(x, y, pattern.patternArray, pattern.patternArray.GridSize.y, pattern.patternArray.GridSize.x);
         }
         if (Input.GetKeyDown(pauseSimulation)) {
             InvokePause();
