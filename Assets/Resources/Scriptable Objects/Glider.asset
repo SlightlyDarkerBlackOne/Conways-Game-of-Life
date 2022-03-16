@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f81257c36af44ad4c85e8a4de7a833ea, type: 3}
-  m_Name: Pattern
+  m_Name: Glider
   m_EditorClassIdentifier: 
-  x: 2
-  y: 2
   patternArray:
     gridSize: {x: 3, y: 3}
     cellSize: {x: 16, y: 16}
     cells:
-    - row: 000000
-    - row: 000000
-    - row: 000000
+    - row: 000100
+    - row: 000001
+    - row: 010101
