@@ -7,6 +7,11 @@ public class InputManager : MonoBehaviour
     public static event Action TogglePause;
 
     Game game;
+    [SerializeField]
+    Pattern pattern;
+
+    [SerializeField]
+    KeyCode pauseSimulation;
 
     void Awake()
     {
@@ -27,8 +32,18 @@ public class InputManager : MonoBehaviour
 
             game.SetCellAliveOnCoordinates(x,y);
         }
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            TogglePause?.Invoke();
+        if (Input.GetMouseButtonDown(1)) {
+            Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            int x = Mathf.RoundToInt(mousePoint.x);
+            int y = Mathf.RoundToInt(mousePoint.y);
+            
+            game.SetPatternAliveOnCoordinates(x, y, pattern.patternArray, pattern.y, pattern.x);
         }
+        if (Input.GetKeyDown(pauseSimulation)) {
+            InvokePause();
+        }
+    }
+    public void InvokePause() {
+        TogglePause?.Invoke();
     }
 }

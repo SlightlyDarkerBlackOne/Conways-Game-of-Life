@@ -155,6 +155,27 @@ public class Game : MonoBehaviour
             ToggleCellAliveOnClick(x, y);
         }
     }
+    public void SetPatternAliveOnCoordinates(int x, int y, Array2DEditor.Array2DBool patternArray, int arrayHeight, int arrayWidth) {
+        bool coordinatesInGrid = true;
+        for (int i = 0; i < arrayHeight; i++) {
+            for (int j = 0; j < arrayWidth; j++) {
+                if (patternArray.GetCell(i,j)) {
+                    if (!AreCoordinatesInGrid(x + i, y + j)){
+                        coordinatesInGrid = false;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < arrayHeight; i++) {
+            for (int j = 0; j < arrayWidth; j++) {
+                if (patternArray.GetCell(i,j)) {
+                    if (coordinatesInGrid) {
+                        SetCellAliveOnCoordinates(x + i, y + j);
+                    }
+                }
+            }
+        }
+    }
     bool AreCoordinatesInGrid(int x, int y) {
         if (x >= 0 && y >= 0 && x < gridWidth && y < gridHeight) {
             return true;
