@@ -5,48 +5,61 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    [SerializeField]
-    private int gridWidth = 128;
-    [SerializeField]
-    private int gridHeight = 64;
+    [SerializeField] int gridWidth = 128;
+    [SerializeField] int gridHeight = 64;
 
-    private static int SCREEN_WIDTH = 64;
-    private static int SCREEN_HEIGHT = 48;
+    public int GridWidth { get; private set; }
+    public int GridHeight { get; private set; }
 
     [SerializeField]
     private float speed = 0.1f;
     private float timer = 0;
 
-    Cell[,] grid = new Cell[SCREEN_WIDTH, SCREEN_HEIGHT];
+    public bool simulationEnabled = false;
 
-    private void Start() {
+    Cell[,] grid;
+
+    private void Awake() {
         SetGridSize();
+    }
+    private void Start() {
+        //SetGridSize();
         PlaceCells();
+
+        InputManager.TogglePause += TogglePauseSimulation;
+    }
+    private void OnDestroy() {
+        InputManager.TogglePause -= TogglePauseSimulation;
     }
 
     private void Update() {
-        if(timer >= speed) {
-            timer = 0f;
-            CountNeighbours();
-            PopulationControl();
-        } else {
-            timer += Time.deltaTime;
+        HandleSimulation();
+    }
+    void HandleSimulation() {
+        if (simulationEnabled) {
+            if (timer >= speed) {
+                timer = 0f;
+                CountNeighbours();
+                PopulationControl();
+            } else {
+                timer += Time.deltaTime;
+            }
         }
     }
 
     private void CountNeighbours() {
-        for (int y = 0; y < SCREEN_HEIGHT; y++) {
-            for (int x = 0; x < SCREEN_WIDTH; x++) {
+        for (int y = 0; y < gridHeight; y++) {
+            for (int x = 0; x < gridWidth; x++) {
                 int numNeighbours = 0;
 
                 //Up
-                if(y + 1 < SCREEN_HEIGHT) {
+                if(y + 1 < gridHeight) {
                     if (grid[x, y + 1].IsAlive) {
                         numNeighbours++;
                     }
                 }
                 //Right
-                if (x + 1 < SCREEN_WIDTH) {
+                if (x + 1 < gridWidth) {
                     if (grid[x+1, y].IsAlive) {
                         numNeighbours++;
                     }
@@ -64,19 +77,19 @@ public class Game : MonoBehaviour
                     }
                 }
                 //UpRight
-                if (x + 1 < SCREEN_WIDTH && y + 1 < SCREEN_HEIGHT) {
+                if (x + 1 < gridWidth && y + 1 < gridHeight) {
                     if (grid[x + 1, y + 1].IsAlive) {
                         numNeighbours++;
                     }
                 }
                 //UpLeft
-                if (x - 1 >= 0 && y + 1 < SCREEN_HEIGHT) {
+                if (x - 1 >= 0 && y + 1 < gridHeight) {
                     if (grid[x - 1, y + 1].IsAlive) {
                         numNeighbours++;
                     }
                 }
                 //DownLeft
-                if (x + 1 < SCREEN_WIDTH && y - 1 >= 0) {
+                if (x + 1 < gridWidth && y - 1 >= 0) {
                     if (grid[x + 1, y - 1].IsAlive) {
                         numNeighbours++;
                     }
@@ -94,8 +107,8 @@ public class Game : MonoBehaviour
     }
 
     private void PopulationControl() {
-        for (int y = 0; y < SCREEN_HEIGHT; y++) {
-            for (int x = 0; x < SCREEN_WIDTH; x++) {
+        for (int y = 0; y < gridHeight; y++) {
+            for (int x = 0; x < gridWidth; x++) {
                 if (grid[x, y].IsAlive) {
                     if (grid[x,y].numNeighbours != 2 && grid[x, y].numNeighbours != 3) {
                         grid[x, y].SetAlive(false);
@@ -109,9 +122,9 @@ public class Game : MonoBehaviour
         }
     }
     private void PlaceCells() {
-        for (int y = 0; y < SCREEN_HEIGHT; y++) {
-            for (int x = 0; x < SCREEN_WIDTH; x++) {
-                Cell cell = Instantiate(Resources.Load("Prefabs/Cell", typeof(Cell)), new Vector2(x, y), Quaternion.identity) as Cell;
+        for (int y = 0; y < gridHeight; y++) {
+            for (int x = 0; x < gridWidth; x++) {
+                Cell cell = Instantiate(Resources.Load("Prefabs/Cell", typeof(Cell)), new Vector2(x, y), Quaternion.identity, this.transform) as Cell;
                 grid[x, y] = cell;
                 grid[x, y].SetAlive(RandomAliveCell());
             }
@@ -128,14 +141,33 @@ public class Game : MonoBehaviour
     }
 
     private void SetGridSize() {
-        SCREEN_HEIGHT = gridHeight;
-        SCREEN_WIDTH = gridWidth;
-        grid = new Cell[SCREEN_WIDTH, SCREEN_HEIGHT];
+        GridWidth = gridWidth;
+        GridHeight = gridHeight;
+        grid = new Cell[gridWidth, gridHeight];
+    }
+
+    void TogglePauseSimulation() {
+        simulationEnabled = !simulationEnabled;
+    }
+  
+    public void SetCellAliveOnCoordinates(int x, int y) {
+        if (AreCoordinatesInGrid(x, y)) {
+            ToggleCellAliveOnClick(x, y);
+        }
+    }
+    bool AreCoordinatesInGrid(int x, int y) {
+        if (x >= 0 && y >= 0 && x < gridWidth && y < gridHeight) {
+            return true;
+        }
+        return false;
+    }
+    void ToggleCellAliveOnClick(int x, int y) {
+        grid[x, y].SetAlive(!grid[x, y].IsAlive);
     }
 
     public void CleanGrid() {
-        for (int y = 0; y < SCREEN_HEIGHT; y++) {
-            for (int x = 0; x < SCREEN_WIDTH; x++) {
+        for (int y = 0; y < gridHeight; y++) {
+            for (int x = 0; x < gridWidth; x++) {
                 grid[x, y].SetAlive(false);
             }
         }
