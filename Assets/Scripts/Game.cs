@@ -17,6 +17,9 @@ public class Game : MonoBehaviour
 
     public bool simulationEnabled = false;
 
+    [SerializeField]
+    private Pattern activePattern;
+
     Cell[,] grid;
 
     private void Awake() {
@@ -155,22 +158,50 @@ public class Game : MonoBehaviour
             ToggleCellAliveOnClick(x, y);
         }
     }
-    public void SetPatternAliveOnCoordinates(int x, int y, Array2DEditor.Array2DBool patternArray, int arrayHeight, int arrayWidth) {
+    public void SetPatternAliveOnCoordinates(int x, int y) {
         bool coordinatesInGrid = true;
-        for (int i = 0; i < arrayHeight; i++) {
-            for (int j = 0; j < arrayWidth; j++) {
-                if (patternArray.GetCell(i,j)) {
+        for (int i = 0; i < activePattern.patternArray.GridSize.y; i++) {
+            for (int j = 0; j < activePattern.patternArray.GridSize.x; j++) {
+                if (activePattern.patternArray.GetCell(i,j)) {
                     if (!AreCoordinatesInGrid(x + i, y + j)){
                         coordinatesInGrid = false;
                     }
                 }
             }
         }
-        for (int i = 0; i < arrayHeight; i++) {
-            for (int j = 0; j < arrayWidth; j++) {
-                if (patternArray.GetCell(i,j)) {
+        for (int i = 0; i < activePattern.patternArray.GridSize.y; i++) {
+            for (int j = 0; j < activePattern.patternArray.GridSize.x; j++) {
+                if (activePattern.patternArray.GetCell(i,j)) {
                     if (coordinatesInGrid) {
                         SetCellAliveOnCoordinates(x + i, y + j);
+                    }
+                }
+            }
+        }
+    }
+    public void SetPatternHoverOnCoordinates() {
+        CleanHoverGrid();
+
+        Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        int x = Mathf.RoundToInt(mousePoint.x);
+        int y = Mathf.RoundToInt(mousePoint.y);
+
+        bool coordinatesInGrid = true;
+        for (int i = 0; i < activePattern.patternArray.GridSize.y; i++) {
+            for (int j = 0; j < activePattern.patternArray.GridSize.x; j++) {
+                if (activePattern.patternArray.GetCell(i, j)) {
+                    if (!AreCoordinatesInGrid(x + i, y + j)) {
+                        coordinatesInGrid = false;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < activePattern.patternArray.GridSize.y; i++) {
+            for (int j = 0; j < activePattern.patternArray.GridSize.x; j++) {
+                if (activePattern.patternArray.GetCell(i, j)) {
+                    if (coordinatesInGrid) {
+                        grid[x + i, y + j].isHovered = true;
+                        Debug.Log(grid[x + i, y + j]);
                     }
                 }
             }
@@ -190,6 +221,14 @@ public class Game : MonoBehaviour
         for (int y = 0; y < gridHeight; y++) {
             for (int x = 0; x < gridWidth; x++) {
                 grid[x, y].SetAlive(false);
+            }
+        }
+    }
+
+    private void CleanHoverGrid() {
+        for (int y = 0; y < gridHeight; y++) {
+            for (int x = 0; x < gridWidth; x++) {
+                grid[x, y].isHovered = false;
             }
         }
     }

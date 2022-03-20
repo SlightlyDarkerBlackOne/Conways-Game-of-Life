@@ -8,7 +8,6 @@ public class Cell : MonoBehaviour
     public int numNeighbours = 0;
 
     public bool isHovered;
-    private Sprite hoveredImage;  
 
     public void SetAlive(bool alive) {
         IsAlive = alive;
@@ -20,19 +19,19 @@ public class Cell : MonoBehaviour
         }
     }
 
-    private void SetHovered(bool hovered) {
-        isHovered = hovered;
-        if (hovered) {
+    private void SetHovered() {
+        if (isHovered) {
             transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
         } else {
             transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 
-    private void OnMouseOver() {
-        SetHovered(true);
+    private void Update() {
+        SetHovered();
     }
-    private void OnMouseExit() {
-        SetHovered(false);
+
+    private void OnMouseOver() {
+        FindObjectOfType<Game>().SetPatternHoverOnCoordinates();
     }
 }

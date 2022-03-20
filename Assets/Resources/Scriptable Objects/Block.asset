@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f81257c36af44ad4c85e8a4de7a833ea, type: 3}
   m_Name: Block
   m_EditorClassIdentifier: 
-  x: 2
-  y: 2
+  patternSprite: {fileID: -2918957073808581050, guid: b4f427319dbdf664b9957658c127c7ba, type: 3}
   patternArray:
     gridSize: {x: 2, y: 2}
     cellSize: {x: 16, y: 16}

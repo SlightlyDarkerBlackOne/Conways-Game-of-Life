@@ -10,14 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f81257c36af44ad4c85e8a4de7a833ea, type: 3}
-  m_Name: Toad
+  m_Name: HWSS
   m_EditorClassIdentifier: 
-  patternSprite: {fileID: -8642677423625045008, guid: b4f427319dbdf664b9957658c127c7ba, type: 3}
+  patternSprite: {fileID: -7045536944118311282, guid: b4f427319dbdf664b9957658c127c7ba, type: 3}
   patternArray:
-    gridSize: {x: 4, y: 4}
+    gridSize: {x: 7, y: 7}
     cellSize: {x: 16, y: 16}
     cells:
-    - row: 00010101
-    - row: 01010100
-    - row: 00000000
-    - row: 00000000
+    - row: 00010101010000
+    - row: 01010101010100
+    - row: 01010101000101
+    - row: 00000000010100
+    - row: 00000000000000
+    - row: 00000000000000
+    - row: 00000000000000
