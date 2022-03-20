@@ -237,4 +237,8 @@ public class Game : MonoBehaviour
         CleanGrid();
         PlaceCells();
     }
+
+    public void SetActivePattern(Pattern pattern) {
+        activePattern = pattern;
+    }
 }
