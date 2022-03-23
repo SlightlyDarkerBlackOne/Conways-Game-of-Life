@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TMPro.TextMeshProUGUI deckSizeText;
     [SerializeField] private TMPro.TextMeshProUGUI availableActionsText;
+    [SerializeField] private TMPro.TextMeshProUGUI finalScoreText;
 
     // Start is called before the first frame update
     void Start()
@@ -20,8 +21,13 @@ public class UIManager : MonoBehaviour
         patternPanel.SetBool("Show", false);
         CardManager.OnDeckChanged += UpdateDeckSizeText;
         GameManager.Instance.OnAvailableActionsChanged += UpdateAvailableActionsText;
+        GameManager.Instance.GameOver += ShowGameOverScreen;
     }
 
+    private void ShowGameOverScreen(int score) {
+        transform.Find("GameOverPanel").gameObject.SetActive(true);
+        finalScoreText.text = score.ToString();
+    }
 
     private void OnDestroy() {
         InputManager.TogglePause -= TogglePausedText;

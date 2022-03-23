@@ -260,4 +260,16 @@ public class Game : MonoBehaviour
     public void SetActivePattern(Pattern pattern) {
         activePattern = pattern;
     }
+
+    public int GetNumberOfAliveCells() {
+        int numberOfAliveCells = 0;
+        for (int y = 0; y < gridHeight; y++) {
+            for (int x = 0; x < gridWidth; x++) {
+                if (grid[x, y].IsAlive) {
+                    numberOfAliveCells++;       
+                }
+            }
+        }
+        return numberOfAliveCells;
+    }
 }
