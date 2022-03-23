@@ -20,4 +20,7 @@ public class SetPatternButton : MonoBehaviour
     public void SetPattern(Pattern pattern) {
         this.pattern = pattern;
     }
+    public void SetPatternAliveOnDragRelease() {
+        FindObjectOfType<Game>().SetPatternAliveOnDragRelease();
+    }
 }

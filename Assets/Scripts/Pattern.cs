@@ -7,5 +7,6 @@ using Array2DEditor;
 public class Pattern : ScriptableObject
 {
     public Sprite patternSprite;
+    public string description;
     public Array2DBool patternArray;
 }

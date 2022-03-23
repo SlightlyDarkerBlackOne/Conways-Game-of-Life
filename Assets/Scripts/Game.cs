@@ -14,6 +14,11 @@ public class Game : MonoBehaviour
     [SerializeField]
     private float speed = 0.1f;
     private float timer = 0;
+    private float simulationTimer = 0;
+    [SerializeField]
+    private int simulationSteps = 100;
+    [SerializeField]
+    private bool isUsingSimulationSteps;
 
     public bool simulationEnabled = false;
 
@@ -47,7 +52,14 @@ public class Game : MonoBehaviour
             } else {
                 timer += Time.deltaTime;
             }
-        }
+        } 
+        if (isUsingSimulationSteps && simulationTimer >= speed * simulationSteps) {
+            Debug.Log("simulation ended");
+            simulationTimer = 0;
+            simulationEnabled = false;
+        } else if(isUsingSimulationSteps && simulationEnabled)
+            simulationTimer += Time.deltaTime;
+        
     }
 
     private void CountNeighbours() {
@@ -178,6 +190,13 @@ public class Game : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void SetPatternAliveOnDragRelease() {
+        Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        int x = Mathf.RoundToInt(mousePoint.x);
+        int y = Mathf.RoundToInt(mousePoint.y);
+        SetPatternAliveOnCoordinates(x, y);
     }
     public void SetPatternHoverOnCoordinates() {
         CleanHoverGrid();
