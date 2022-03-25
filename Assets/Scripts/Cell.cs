@@ -31,7 +31,10 @@ public class Cell : MonoBehaviour
         SetHovered();
     }
 
-    private void OnMouseOver() {
-        FindObjectOfType<Game>().SetPatternHoverOnCoordinates();
+    private void OnMouseEnter() {
+        Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        int x = Mathf.RoundToInt(mousePoint.x);
+        int y = Mathf.RoundToInt(mousePoint.y);
+        FindObjectOfType<Game>().SetPatternHoverOnCoordinates(x, y);
     }
 }

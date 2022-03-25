@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI deckSizeText;
     [SerializeField] private TMPro.TextMeshProUGUI availableActionsText;
     [SerializeField] private TMPro.TextMeshProUGUI finalScoreText;
+    [SerializeField] private TMPro.TextMeshProUGUI remainingTurnsText;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour
         CardManager.OnDeckChanged += UpdateDeckSizeText;
         GameManager.Instance.OnAvailableActionsChanged += UpdateAvailableActionsText;
         GameManager.Instance.GameOver += ShowGameOverScreen;
+        GameManager.Instance.TurnEnded += UpdateTurnsText;
     }
 
     private void ShowGameOverScreen(int score) {
@@ -41,8 +43,10 @@ public class UIManager : MonoBehaviour
         deckSizeText.text = count.ToString();
 
     }
-
-    void TogglePausedText() {
+    private void UpdateTurnsText(int count) {
+        remainingTurnsText.text = count.ToString();
+    }
+    private void TogglePausedText() {
         bool paused = pausedTextAnim.GetBool("Paused");
         pausedTextAnim.SetBool("Paused", !paused);
     }

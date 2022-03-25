@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Toad
   m_EditorClassIdentifier: 
   patternSprite: {fileID: -8642677423625045008, guid: b4f427319dbdf664b9957658c127c7ba, type: 3}
+  description: Toad is an oscillator with a period 2 oscillation.
   patternArray:
     gridSize: {x: 4, y: 4}
     cellSize: {x: 16, y: 16}
@@ -21,3 +22,4 @@ MonoBehaviour:
     - row: 01010100
     - row: 00000000
     - row: 00000000
+  cardType: 2

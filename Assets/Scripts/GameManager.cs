@@ -15,16 +15,22 @@ public class GameManager : GenericSingletonClass<GameManager>
     [SerializeField]
     private float gameOverDelayTime = 1.5f;
 
+    private bool canEndTurn = true;
+    private bool cardInPlay;
+
     public event Action<int> OnAvailableActionsChanged;
+    public event Action<int> TurnEnded;
     public event Action<int> GameOver;
 
     private void Start() {
         SetAvailableActionsToDefault();
         OnAvailableActionsChanged?.Invoke(availableActions);
+
+        TurnEnded?.Invoke(maximumTurns);
     }
 
     public bool CanPlayCard(Card card) {
-        return (CardExpense.ReturnCardExpense(card) <= availableActions);
+        return ((CardExpense.GetCardExpense(card) <= availableActions) && !cardInPlay);
     }
 
     void SetAvailableActionsToDefault() {
@@ -39,12 +45,24 @@ public class GameManager : GenericSingletonClass<GameManager>
         OnAvailableActionsChanged?.Invoke(availableActions);
     }
     public void EndTurn() {
-        Debug.Log("EndTurn");
-        maximumTurns--;
-        if(maximumTurns <= 0) {
-            Debug.Log("GameOver");
-            StartCoroutine(ShowEndScreen());
+        if (canEndTurn) {
+            Debug.Log("EndTurn");
+            maximumTurns--;
+            TurnEnded?.Invoke(maximumTurns);
+            SetAvailableActionsToDefault();
+            if (maximumTurns <= 0) {
+                Debug.Log("GameOver");
+                StartCoroutine(ShowEndScreen());
+            } 
         }
+    }
+    public void DisableEndTurn() {
+        canEndTurn = false;
+        cardInPlay = true;
+    }
+    public void EnableEndTurn() {
+        canEndTurn = true;
+        cardInPlay = false;
     }
     public void RestartScene() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

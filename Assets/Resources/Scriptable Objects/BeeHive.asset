@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BeeHive
   m_EditorClassIdentifier: 
   patternSprite: {fileID: -1702091535679743768, guid: b4f427319dbdf664b9957658c127c7ba, type: 3}
+  description: Still life bee hive.
   patternArray:
     gridSize: {x: 4, y: 4}
     cellSize: {x: 16, y: 16}
@@ -21,3 +22,4 @@ MonoBehaviour:
     - row: 01000001
     - row: 00010100
     - row: 00000000
+  cardType: 1

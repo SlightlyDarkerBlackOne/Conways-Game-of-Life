@@ -12,18 +12,9 @@ public class Card : MonoBehaviour, IPointerDownHandler
     [SerializeField]
     private float moveDistance = 40f;
 
-    public enum Type
-    {
-        None,
-        StillLife,
-        Oscillator,
-        SpaceShip
-    }
-
-    public Type cardType;
-
     [SerializeField]
     private Pattern pattern;
+    public Pattern Pattern { get { return pattern; } private set { pattern = value; } }
 
     private CardManager cardManager;
     void Start()
@@ -44,8 +35,10 @@ public class Card : MonoBehaviour, IPointerDownHandler
         if (CanPlayCard()) {
             transform.position += Vector3.up * moveDistance;
             hasBeenPlayed = true;
+            SetActivePattern();
             SetAvailableCardSlot();
-            GameManager.Instance.ReduceAvailableActions(CardExpense.ReturnCardExpense(this));
+            GameManager.Instance.ReduceAvailableActions(CardExpense.GetCardExpense(this));
+            GameManager.Instance.DisableEndTurn();
             Invoke("MoveToDiscardPile", 2f); 
         }
     }
@@ -61,10 +54,14 @@ public class Card : MonoBehaviour, IPointerDownHandler
     void SetAvailableCardSlot() {
         cardManager.SetAvailableCardSlot(true, handIndex);
     }
+    void SetActivePattern() {
+        FindObjectOfType<Game>().SetActivePattern(Pattern);
+    }
 
     void SetCardUI() {
-        transform.GetChild(0).GetChild(0).Find("Image").GetComponent<Image>().sprite = pattern.patternSprite;
-        transform.GetChild(0).GetChild(0).Find("DescriptionText").GetComponent<TMPro.TextMeshProUGUI>().text = pattern.description;
-        transform.GetChild(0).GetChild(0).Find("TitleText").GetComponent<TMPro.TextMeshProUGUI>().text = pattern.name;
+        transform.GetChild(0).GetChild(0).Find("Image").GetComponent<Image>().sprite = Pattern.patternSprite;
+        transform.GetChild(0).GetChild(0).Find("DescriptionText").GetComponent<TMPro.TextMeshProUGUI>().text = Pattern.description;
+        transform.GetChild(0).GetChild(0).Find("TitleText").GetComponent<TMPro.TextMeshProUGUI>().text = Pattern.name;
+        transform.GetChild(0).GetChild(0).Find("ActionsText").GetComponent<TMPro.TextMeshProUGUI>().text = CardExpense.GetCardExpense(this).ToString();
     }
 }

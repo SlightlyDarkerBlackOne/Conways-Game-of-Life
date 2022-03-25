@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Beacon
   m_EditorClassIdentifier: 
   patternSprite: {fileID: -7790625006773922242, guid: b4f427319dbdf664b9957658c127c7ba, type: 3}
+  description: Beacon is an oscillator with a period 2 oscillation.
   patternArray:
     gridSize: {x: 4, y: 4}
     cellSize: {x: 16, y: 16}
@@ -21,3 +22,4 @@ MonoBehaviour:
     - row: 01000000
     - row: 00000001
     - row: 00000101
+  cardType: 2

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HWSS
   m_EditorClassIdentifier: 
   patternSprite: {fileID: -7045536944118311282, guid: b4f427319dbdf664b9957658c127c7ba, type: 3}
+  description: The mighty Heavy-weight spaceship.
   patternArray:
     gridSize: {x: 7, y: 7}
     cellSize: {x: 16, y: 16}
@@ -24,3 +25,4 @@ MonoBehaviour:
     - row: 00000000000000
     - row: 00000000000000
     - row: 00000000000000
+  cardType: 3

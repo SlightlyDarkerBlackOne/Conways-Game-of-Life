@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Block
   m_EditorClassIdentifier: 
   patternSprite: {fileID: -2918957073808581050, guid: b4f427319dbdf664b9957658c127c7ba, type: 3}
-  description: Just a block.
+  description: Just a still life block.
   patternArray:
     gridSize: {x: 2, y: 2}
     cellSize: {x: 16, y: 16}
     cells:
     - row: 0101
     - row: 0101
+  cardType: 1

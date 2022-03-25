@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Glider
   m_EditorClassIdentifier: 
   patternSprite: {fileID: -1969831840802942632, guid: b4f427319dbdf664b9957658c127c7ba, type: 3}
+  description: Glider is the most basic spaceship.
   patternArray:
     gridSize: {x: 3, y: 3}
     cellSize: {x: 16, y: 16}
@@ -20,3 +21,4 @@ MonoBehaviour:
     - row: 000100
     - row: 000001
     - row: 010101
+  cardType: 3

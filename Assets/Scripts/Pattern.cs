@@ -9,4 +9,13 @@ public class Pattern : ScriptableObject
     public Sprite patternSprite;
     public string description;
     public Array2DBool patternArray;
+    public enum Type
+    {
+        None,
+        StillLife,
+        Oscillator,
+        SpaceShip
+    }
+
+    public Type cardType;
 }

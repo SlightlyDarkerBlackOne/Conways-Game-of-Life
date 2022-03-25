@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Blinker
   m_EditorClassIdentifier: 
   patternSprite: {fileID: -4317225442866144622, guid: b4f427319dbdf664b9957658c127c7ba, type: 3}
+  description: Blinker is an oscillator with a period 2 oscillation.
   patternArray:
     gridSize: {x: 3, y: 3}
     cellSize: {x: 16, y: 16}
@@ -20,3 +21,4 @@ MonoBehaviour:
     - row: 010000
     - row: 010000
     - row: 010000
+  cardType: 2
