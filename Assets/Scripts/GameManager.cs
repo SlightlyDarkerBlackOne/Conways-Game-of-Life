@@ -17,6 +17,7 @@ public class GameManager : GenericSingletonClass<GameManager>
 
     private bool canEndTurn = true;
     private bool cardInPlay;
+    private bool canDrawCard;
 
     public event Action<int> OnAvailableActionsChanged;
     public event Action<int> TurnEnded;
@@ -44,16 +45,26 @@ public class GameManager : GenericSingletonClass<GameManager>
         }
         OnAvailableActionsChanged?.Invoke(availableActions);
     }
+    public bool CanDrawCard() {
+        return canDrawCard;
+    }
+    public void DisableCardDraw() {
+        canDrawCard = false;
+    }
     public void EndTurn() {
         if (canEndTurn) {
             Debug.Log("EndTurn");
             maximumTurns--;
-            TurnEnded?.Invoke(maximumTurns);
-            SetAvailableActionsToDefault();
             if (maximumTurns <= 0) {
                 Debug.Log("GameOver");
                 StartCoroutine(ShowEndScreen());
+                return;
             } 
+
+            TurnEnded?.Invoke(maximumTurns);
+            SetAvailableActionsToDefault();
+            canDrawCard = true;
+            GetComponent<InputManager>().InvokePause();
         }
     }
     public void DisableEndTurn() {

@@ -1816,6 +1816,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1345442804}
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_MethodName: UseSimulationWithSteps
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &445021624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3598,7 +3610,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1345442807}
         m_TargetAssemblyTypeName: CardManager, Assembly-CSharp
-        m_MethodName: DrawCard
+        m_MethodName: TryDrawCard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4036,7 +4048,7 @@ MonoBehaviour:
   simulationSteps: 100
   isUsingSimulationSteps: 0
   simulationEnabled: 0
-  activePattern: {fileID: 11400000, guid: e8da38afc414f39448f86785eb80d9a4, type: 2}
+  activePattern: {fileID: 11400000, guid: d4c73e06447db62448c9d963f7cbe1f3, type: 2}
 --- !u!4 &1345442805
 Transform:
   m_ObjectHideFlags: 0
@@ -4094,6 +4106,9 @@ MonoBehaviour:
   - {fileID: 756784162}
   - {fileID: 1415397945}
   availableCardSlots: 0101010101
+  numberOfStartingCards: 3
+  drawDelay: 0.2
+  startDrawDelay: 1
 --- !u!114 &1345442808
 MonoBehaviour:
   m_ObjectHideFlags: 0

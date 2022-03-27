@@ -10,13 +10,38 @@ public class CardManager : MonoBehaviour
     public Transform[] cardSlots;
     public bool[] availableCardSlots;
 
+    [SerializeField]
+    private int numberOfStartingCards = 3;
+    [SerializeField]
+    private float drawDelay = 0.1f;
+    [SerializeField]
+    private float startDrawDelay = 1f;
+
     public static event Action<int> OnDeckChanged;
 
     private void Start() {
         OnDeckChanged?.Invoke(deck.Count);
+
+        StartCoroutine(DrawStartingCards(numberOfStartingCards));
     }
-    public void DrawCard() {
-        if(deck.Count >= 1) {
+
+    private IEnumerator DrawStartingCards(int count) {
+        yield return new WaitForSeconds(startDrawDelay);
+        while (count > 0) {
+            yield return new WaitForSeconds(drawDelay);
+            DrawCard();
+            count--;
+        }
+    }
+    public void TryDrawCard() {
+        if (GameManager.Instance.CanDrawCard()) {
+            DrawCard();
+            GameManager.Instance.DisableCardDraw();
+        }
+    }
+
+    private void DrawCard() {
+        if(deck.Count >= 1) { 
             Card randCard = deck[UnityEngine.Random.Range(0, deck.Count)];
 
             for (int i = 0; i < availableCardSlots.Length; i++) {
@@ -30,9 +55,10 @@ public class CardManager : MonoBehaviour
                     OnDeckChanged?.Invoke(deck.Count);
                     return;
                 }
-            }
+            }  
         }
     }
+
 
     public void Shuffle() {
         if(discardPile.Count >= 1) {

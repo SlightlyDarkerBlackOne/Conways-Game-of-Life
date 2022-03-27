@@ -24,6 +24,7 @@ public class Game : MonoBehaviour
 
     [SerializeField]
     private Pattern activePattern;
+    private Pattern emptyPattern;
 
     Cell[,] grid;
 
@@ -35,6 +36,7 @@ public class Game : MonoBehaviour
         PlaceCells();
 
         InputManager.TogglePause += TogglePauseSimulation;
+        emptyPattern = activePattern;
     }
     private void OnDestroy() {
         InputManager.TogglePause -= TogglePauseSimulation;
@@ -182,6 +184,7 @@ public class Game : MonoBehaviour
                 }
             }
         }
+        activePattern = emptyPattern;
     }
 
     public void SetPatternAliveOnDragRelease() {
@@ -265,5 +268,9 @@ public class Game : MonoBehaviour
             }
         }
         return numberOfAliveCells;
+    }
+
+    public void UseSimulationWithSteps() {
+        isUsingSimulationSteps = true;
     }
 }
