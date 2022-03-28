@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI availableActionsText;
     [SerializeField] private TMPro.TextMeshProUGUI finalScoreText;
     [SerializeField] private TMPro.TextMeshProUGUI remainingTurnsText;
+    [SerializeField] Toggle multiplayerToggle;
 
     // Start is called before the first frame update
     void Start()
@@ -53,5 +55,13 @@ public class UIManager : MonoBehaviour
 
     public void TogglePatternPanel() {
         patternPanel.SetBool("Show", !patternPanel.GetBool("Show"));
+    }
+
+    private void Update() {
+        if (multiplayerToggle.isOn) {
+            GameManager.Instance.isLocalMultiplayer = true;
+        } else {
+            GameManager.Instance.isLocalMultiplayer = false;
+        }
     }
 }
