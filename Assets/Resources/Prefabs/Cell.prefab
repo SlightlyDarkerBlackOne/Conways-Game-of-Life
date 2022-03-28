@@ -179,8 +179,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3c2e4463257e34bba71d2f8b14116c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAlive: 0
   numNeighbours: 0
+  ownNeighbours: 0
+  enemyNeighbours: 0
   isHovered: 0
+  isPlayerCell: 1
+  game: {fileID: 0}
+  sR: {fileID: 6986799012725981289}
 --- !u!61 &6270162589932355100
 BoxCollider2D:
   m_ObjectHideFlags: 0

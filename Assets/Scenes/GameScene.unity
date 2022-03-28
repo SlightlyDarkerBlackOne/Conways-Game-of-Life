@@ -1030,7 +1030,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DECK
+  m_text: DRAW
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2419,7 +2419,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1976240746}
   m_Direction: 0
   m_Value: 1
-  m_Size: 0.9999997
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4019,10 +4019,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1345442805}
+  - component: {fileID: 1345442808}
   - component: {fileID: 1345442804}
   - component: {fileID: 1345442806}
   - component: {fileID: 1345442807}
-  - component: {fileID: 1345442808}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -4044,8 +4044,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridWidth: 128
   gridHeight: 64
+  alivePercentage: 25
   speed: 0.015
-  simulationSteps: 100
+  simulationSteps: 250
   isUsingSimulationSteps: 0
   simulationEnabled: 0
   activePattern: {fileID: 11400000, guid: d4c73e06447db62448c9d963f7cbe1f3, type: 2}
@@ -4124,6 +4125,10 @@ MonoBehaviour:
   availableActions: 0
   maximumTurns: 6
   gameOverDelayTime: 0.78
+  player1Color: {r: 0.26223743, g: 0.5415675, b: 0.6698113, a: 1}
+  player2Color: {r: 0.6226415, g: 0.22614807, b: 0.22614807, a: 1}
+  isLocalMultiplayer: 0
+  isPlayerTurn: 1
 --- !u!1 &1415397944
 GameObject:
   m_ObjectHideFlags: 0

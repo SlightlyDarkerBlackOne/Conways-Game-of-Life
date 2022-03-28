@@ -14,7 +14,7 @@ public class InputManager : MonoBehaviour
     private Vector2 mousePoint;
     void Awake()
     {
-        game = FindObjectOfType<Game>();
+        game = Game.Instance;
     }
 
     // Update is called once per frame
@@ -24,13 +24,6 @@ public class InputManager : MonoBehaviour
     }
 
     void UserInput() {      
-        if (Input.GetMouseButtonDown(1)) {
-            mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int x = Mathf.RoundToInt(mousePoint.x);
-            int y = Mathf.RoundToInt(mousePoint.y);
-
-            game.SetCellAliveOnCoordinates(x,y);
-        }
         if (Input.GetMouseButtonDown(0)) {
             mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             int x = Mathf.RoundToInt(mousePoint.x);

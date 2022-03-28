@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Game : MonoBehaviour
+public class Game : GenericSingletonClass<Game>
 {
     [SerializeField] int gridWidth = 128;
     [SerializeField] int gridHeight = 64;
@@ -11,6 +11,8 @@ public class Game : MonoBehaviour
     public int GridWidth { get; private set; }
     public int GridHeight { get; private set; }
 
+    [SerializeField]
+    private int alivePercentage = 75;
     [SerializeField]
     private float speed = 0.1f;
     private float timer = 0;
@@ -32,7 +34,6 @@ public class Game : MonoBehaviour
         SetGridSize();
     }
     private void Start() {
-        //SetGridSize();
         PlaceCells();
 
         InputManager.TogglePause += TogglePauseSimulation;
@@ -67,58 +68,78 @@ public class Game : MonoBehaviour
         for (int y = 0; y < gridHeight; y++) {
             for (int x = 0; x < gridWidth; x++) {
                 int numNeighbours = 0;
+                int ownNeighbours = 0;
+                int enemyNeightbours = 0;
 
                 //Up
                 if(y + 1 < gridHeight) {
                     if (grid[x, y + 1].IsAlive) {
                         numNeighbours++;
+                        CountOwnAndEnemyNeighbours(y, x, x, y+1, ref enemyNeightbours, ref ownNeighbours);
                     }
                 }
                 //Right
                 if (x + 1 < gridWidth) {
                     if (grid[x+1, y].IsAlive) {
                         numNeighbours++;
+                        CountOwnAndEnemyNeighbours(y, x, x + 1, y, ref enemyNeightbours, ref ownNeighbours);
                     }
                 }
                 //Down
                 if (y - 1 >= 0) {
                     if (grid[x, y - 1].IsAlive) {
-                        numNeighbours++;
+                        numNeighbours++; 
+                        CountOwnAndEnemyNeighbours(y, x, x, y - 1, ref enemyNeightbours, ref ownNeighbours);
                     }
                 }
                 //Left
                 if (x - 1 >= 0) {
                     if (grid[x-1, y].IsAlive) {
                         numNeighbours++;
+                        CountOwnAndEnemyNeighbours(y, x, x - 1, y, ref enemyNeightbours, ref ownNeighbours);
                     }
                 }
                 //UpRight
                 if (x + 1 < gridWidth && y + 1 < gridHeight) {
                     if (grid[x + 1, y + 1].IsAlive) {
                         numNeighbours++;
+                        CountOwnAndEnemyNeighbours(y, x, x + 1, y + 1, ref enemyNeightbours, ref ownNeighbours);
                     }
                 }
                 //UpLeft
                 if (x - 1 >= 0 && y + 1 < gridHeight) {
                     if (grid[x - 1, y + 1].IsAlive) {
                         numNeighbours++;
+                        CountOwnAndEnemyNeighbours(y, x, x - 1, y + 1, ref enemyNeightbours, ref ownNeighbours);
                     }
                 }
                 //DownLeft
                 if (x + 1 < gridWidth && y - 1 >= 0) {
                     if (grid[x + 1, y - 1].IsAlive) {
                         numNeighbours++;
+                        CountOwnAndEnemyNeighbours(y, x, x + 1, y - 1, ref enemyNeightbours, ref ownNeighbours);
                     }
                 }
                 //DownRight
                 if (x - 1 >= 0 && y - 1 >= 0) {
                     if (grid[x - 1, y - 1].IsAlive) {
                         numNeighbours++;
+                        CountOwnAndEnemyNeighbours(y, x, x - 1, y - 1, ref enemyNeightbours, ref ownNeighbours);
                     }
                 }
 
                 grid[x, y].numNeighbours = numNeighbours;
+                grid[x, y].ownNeighbours = ownNeighbours;
+                grid[x, y].enemyNeighbours = enemyNeightbours;
             }
+        }
+    }
+
+    private void CountOwnAndEnemyNeighbours(int y, int x, int x1, int y1, ref int enemyNeighbours, ref int ownNeighbours) {
+        if ((grid[x1, y1].isPlayerCell && grid[x, y].isPlayerCell) || (!grid[x1, y1].isPlayerCell && !grid[x, y].isPlayerCell)) {
+            ownNeighbours++;
+        } else {
+            enemyNeighbours++;
         }
     }
 
@@ -126,7 +147,7 @@ public class Game : MonoBehaviour
         for (int y = 0; y < gridHeight; y++) {
             for (int x = 0; x < gridWidth; x++) {
                 if (grid[x, y].IsAlive) {
-                    if (grid[x,y].numNeighbours != 2 && grid[x, y].numNeighbours != 3) {
+                    if ((grid[x,y].numNeighbours != 2 && grid[x, y].numNeighbours != 3) || grid[x,y].enemyNeighbours > grid[x, y].ownNeighbours) {
                         grid[x, y].SetAlive(false);
                     }
                 } else {
@@ -137,19 +158,28 @@ public class Game : MonoBehaviour
             }
         }
     }
+    //TODO Object pooling
     private void PlaceCells() {
         for (int y = 0; y < gridHeight; y++) {
             for (int x = 0; x < gridWidth; x++) {
                 Cell cell = Instantiate(Resources.Load("Prefabs/Cell", typeof(Cell)), new Vector2(x, y), Quaternion.identity, this.transform) as Cell;
                 grid[x, y] = cell;
-                grid[x, y].SetAlive(RandomAliveCell());
+                SetRandomCell(y, x);
             }
         }
     }
 
-    bool RandomAliveCell() {
+    private void SetRandomCell(int y, int x) {
+        bool alive = RandomAliveCell();
+        if (alive && GameManager.Instance.isLocalMultiplayer) {
+            grid[x, y].isPlayerCell = UnityEngine.Random.Range(0, 100) <= 50 ? true : false;
+        }
+        grid[x, y].SetAlive(alive);
+    }
+
+    private bool RandomAliveCell() {
         int rand = UnityEngine.Random.Range(0, 100);
-        if(rand >= 75) {
+        if(rand >= (100-alivePercentage)) {
             return true;
         } else {
             return false;
@@ -166,9 +196,9 @@ public class Game : MonoBehaviour
         simulationEnabled = !simulationEnabled;
     }
   
-    public void SetCellAliveOnCoordinates(int x, int y) {
+    public void SetCellAliveOnCoordinates(int x, int y, bool isPlayerCell = true) {
         if (AreCoordinatesInGrid(x, y)) {
-            ToggleCellAliveOnClick(x, y);
+            ToggleCellAliveOnClick(x, y, isPlayerCell);
             GameManager.Instance.EnableEndTurn();
         }
     }
@@ -180,7 +210,7 @@ public class Game : MonoBehaviour
         for (int i = 0; i < activePattern.patternArray.GridSize.y; i++) {
             for (int j = 0; j < activePattern.patternArray.GridSize.x; j++) {
                 if (activePattern.patternArray.GetCell(i,j)) {
-                    SetCellAliveOnCoordinates(x + i, y + j);
+                    SetCellAliveOnCoordinates(x + i, y + j, GameManager.Instance.isPlayerTurn);
                 }
             }
         }
@@ -213,8 +243,7 @@ public class Game : MonoBehaviour
             for (int j = 0; j < activePattern.patternArray.GridSize.x; j++) {
                 if (activePattern.patternArray.GetCell(i, j)) {
                     if (!AreCoordinatesInGrid(x + i, y + j)) {
-                        coordinatesInGrid = false;
-                        return coordinatesInGrid;
+                        return false;
                     }
                 }
             }
@@ -229,7 +258,8 @@ public class Game : MonoBehaviour
         }
         return false;
     }
-    void ToggleCellAliveOnClick(int x, int y) {
+    void ToggleCellAliveOnClick(int x, int y, bool isPlayerCell) {
+        grid[x, y].isPlayerCell = isPlayerCell;
         grid[x, y].SetAlive(!grid[x, y].IsAlive);
     }
 
@@ -250,8 +280,11 @@ public class Game : MonoBehaviour
     }
 
     public void RunSimulation() {
-        CleanGrid();
-        PlaceCells();
+        for (int y = 0; y < gridHeight; y++) {
+            for (int x = 0; x < gridWidth; x++) {
+                SetRandomCell(y, x);
+            }
+        }
     }
 
     public void SetActivePattern(Pattern pattern) {

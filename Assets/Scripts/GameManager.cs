@@ -19,6 +19,12 @@ public class GameManager : GenericSingletonClass<GameManager>
     private bool cardInPlay;
     private bool canDrawCard;
 
+    public Color player1Color;
+    public Color player2Color;
+
+    public bool isLocalMultiplayer;
+    public bool isPlayerTurn = true;
+
     public event Action<int> OnAvailableActionsChanged;
     public event Action<int> TurnEnded;
     public event Action<int> GameOver;
@@ -65,6 +71,8 @@ public class GameManager : GenericSingletonClass<GameManager>
             SetAvailableActionsToDefault();
             canDrawCard = true;
             GetComponent<InputManager>().InvokePause();
+            if(isLocalMultiplayer)
+                isPlayerTurn = !isPlayerTurn;
         }
     }
     public void DisableEndTurn() {
