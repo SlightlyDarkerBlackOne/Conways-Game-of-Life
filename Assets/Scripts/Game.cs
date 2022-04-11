@@ -15,7 +15,6 @@ public class Game : GenericSingletonClass<Game>
     private int alivePercentage = 75;
     [SerializeField]
     private float speed = 0.1f;
-    private float timer = 0;
     private float simulationTimer = 0;
     [SerializeField]
     private int simulationSteps = 100;
@@ -46,20 +45,19 @@ public class Game : GenericSingletonClass<Game>
     private void Update() {
         HandleSimulation();
     }
+
+    IEnumerator MakeSimulationStep() {
+        CountNeighbours();
+        PopulationControl();
+
+        yield return new WaitForSeconds(speed);
+        StartCoroutine(MakeSimulationStep());
+    }
     void HandleSimulation() {
-        if (simulationEnabled) {
-            if (timer >= speed) {
-                timer = 0f;
-                CountNeighbours();
-                PopulationControl();
-            } else {
-                timer += Time.deltaTime;
-            }
-        } 
         if (isUsingSimulationSteps && simulationTimer >= speed * simulationSteps) {
             Debug.Log("simulation ended");
             simulationTimer = 0;
-            simulationEnabled = false;
+            TogglePauseSimulation();
         } else if(isUsingSimulationSteps && simulationEnabled)
             simulationTimer += Time.deltaTime;
     }
@@ -194,6 +192,12 @@ public class Game : GenericSingletonClass<Game>
 
     void TogglePauseSimulation() {
         simulationEnabled = !simulationEnabled;
+
+        if (simulationEnabled) {
+            StartCoroutine(MakeSimulationStep());
+        } else {
+            StopAllCoroutines();
+        }
     }
   
     public void SetCellAliveOnCoordinates(int x, int y, bool isPlayerCell = true) {
@@ -232,7 +236,7 @@ public class Game : GenericSingletonClass<Game>
         for (int i = 0; i < activePattern.patternArray.GridSize.y; i++) {
             for (int j = 0; j < activePattern.patternArray.GridSize.x; j++) {
                 if (activePattern.patternArray.GetCell(i, j)) {
-                    grid[x + i, y + j].isHovered = true;
+                    grid[x + i, y + j].SetHovered(true);
                 }
             }
         }
@@ -274,7 +278,7 @@ public class Game : GenericSingletonClass<Game>
     private void CleanHoverGrid() {
         for (int y = 0; y < gridHeight; y++) {
             for (int x = 0; x < gridWidth; x++) {
-                grid[x, y].isHovered = false;
+                grid[x, y].SetHovered(false);
             }
         }
     }

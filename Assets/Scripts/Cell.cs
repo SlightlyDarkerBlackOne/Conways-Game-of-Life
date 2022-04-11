@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Cell : MonoBehaviour
@@ -13,34 +11,35 @@ public class Cell : MonoBehaviour
     public bool isPlayerCell = true;
 
     [SerializeField]
+    private SpriteRenderer sRHover;
+    [SerializeField]
     private SpriteRenderer sR;
-    
+
     public void SetAlive(bool alive) {
         IsAlive = alive;
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        //SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (alive) {
-            GetComponent<SpriteRenderer>().enabled = true;
+            //GetComponent<SpriteRenderer>().enabled = true;
+            sR.enabled = true;
             if (isPlayerCell) {
-                spriteRenderer.color = GameManager.Instance.player1Color;
+                sR.color = GameManager.Instance.player1Color;
             } else if(!isPlayerCell){
-                spriteRenderer.color = GameManager.Instance.player2Color;
+                sR.color = GameManager.Instance.player2Color;
             }
         } else {
-            GetComponent<SpriteRenderer>().enabled = false;
-        }
-    }
-
-    private void SetHovered() {
-        if (isHovered) {
-            sR.enabled = true;
-        } else {
+            //GetComponent<SpriteRenderer>().enabled = false;
             sR.enabled = false;
         }
     }
 
-    private void Update() {
-        SetHovered();
+    public void SetHovered(bool hoverCondition) {
+        isHovered = hoverCondition;
+        if (isHovered) {
+            sRHover.enabled = true;
+        } else {
+            sRHover.enabled = false;
+        }
     }
 
     private void OnMouseEnter() {

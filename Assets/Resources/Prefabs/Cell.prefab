@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1d14dc8075c09174983ab1a9edfc237c, type: 3}
   m_Color: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 0.31764707}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 8950151254730863347}
   - component: {fileID: 8950151254730863344}
   - component: {fileID: 8950151254730863345}
-  - component: {fileID: 6270162589932355100}
+  - component: {fileID: 7718678316550696907}
   m_Layer: 0
   m_Name: Cell
   m_TagString: Untagged
@@ -156,7 +156,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1d14dc8075c09174983ab1a9edfc237c, type: 3}
   m_Color: {r: 0.28515485, g: 0.6792453, b: 0.46759686, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -179,15 +179,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3c2e4463257e34bba71d2f8b14116c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAlive: 0
   numNeighbours: 0
   ownNeighbours: 0
   enemyNeighbours: 0
   isHovered: 0
   isPlayerCell: 1
-  game: {fileID: 0}
-  sR: {fileID: 6986799012725981289}
---- !u!61 &6270162589932355100
+  sRHover: {fileID: 6986799012725981289}
+  sR: {fileID: 8950151254730863344}
+--- !u!61 &7718678316550696907
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
